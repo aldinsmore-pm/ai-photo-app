@@ -30,14 +30,11 @@ const CameraScreen: React.FC = () => {
       setIsCapturing(true);
       const photo: Capture = await cameraRef.current.takePhoto({});
       const jobId = Date.now().toString();
-      addJob({ id: jobId, presetId: currentStyleId, status: 'generating' });
-
-      (navigation as any).navigate('Loading', { jobId });
-
-      const result = await OpenAIService.generateImage(currentStyleId);
-      const imageUrl = result.data[0].url;
-      updateJob(jobId, { status: 'completed', resultUri: imageUrl });
-      // Result navigation handled by LoadingScreen once job completes
+      // Navigate to Editor for optional mask & settings. Generation happens there.
+      (navigation as any).navigate('Editor', {
+        photoUri: (photo as any).path ?? (photo as any).uri ?? '',
+        presetId: currentStyleId,
+      });
     } catch (err: any) {
       console.error(err);
     } finally {
