@@ -19,6 +19,8 @@ module.exports = ({ config }) => {
       infoPlist: {
         ...(config.ios?.infoPlist ?? {}),
         NSCameraUsageDescription: 'This app needs camera access to capture photos for AI enhancements.',
+        NSPhotoLibraryAddUsageDescription: 'Allows the app to save your AI-enhanced photos to your gallery.',
+        NSPhotoLibraryUsageDescription: 'Allows the app to select existing photos to enhance with AI.',
       },
     },
   };
