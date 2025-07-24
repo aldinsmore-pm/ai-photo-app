@@ -32,10 +32,12 @@ const CameraScreen: React.FC = () => {
       const jobId = Date.now().toString();
       addJob({ id: jobId, presetId: currentStyleId, status: 'generating' });
 
+      (navigation as any).navigate('Loading', { jobId });
+
       const result = await OpenAIService.generateImage(currentStyleId);
       const imageUrl = result.data[0].url;
       updateJob(jobId, { status: 'completed', resultUri: imageUrl });
-      navigation.navigate('Result' as never, { jobId } as never);
+      // Result navigation handled by LoadingScreen once job completes
     } catch (err: any) {
       console.error(err);
     } finally {
