@@ -8,11 +8,11 @@ export type GenerateImageOptions = {
   outputFormat?: 'jpeg' | 'png' | 'webp';
   n?: number; // number of images
   inputFidelity?: 'high' | 'default';
+  userPrompt?: string;
 };
 
 export type EditImageOptions = GenerateImageOptions & {
   maskUri?: string;
-  presetId?: string;
 };
 
 /**
@@ -48,7 +48,7 @@ class OpenAIService {
       } as const;
     }
 
-    const prompt = buildPrompt(presetId);
+    const prompt = buildPrompt(presetId, options.userPrompt);
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const response = await (this.client as any).images.generate({
       model: 'gpt-image-1',
@@ -81,7 +81,7 @@ class OpenAIService {
       } as const;
     }
 
-    const prompt = buildPrompt(presetId);
+    const prompt = buildPrompt(presetId, options.userPrompt);
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const response = await (this.client as any).images.edit({
       model: 'gpt-image-1',

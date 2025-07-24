@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, SafeAreaView, StyleSheet, Switch, Text, View } from 'react-native';
+import { Image, SafeAreaView, StyleSheet, Switch, Text, View, TextInput } from 'react-native';
 import MaskOverlay, { MaskOverlayHandle } from '../components/MaskOverlay';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -22,6 +22,7 @@ const EditorScreen: React.FC = () => {
   const route = useRoute() as EditorRoute;
   const { photoUri, presetId } = route.params;
   const [highFidelity, setHighFidelity] = useState(false);
+  const [customPrompt, setCustomPrompt] = useState('');
   const maskRef = React.useRef<MaskOverlayHandle>(null);
   const addJob = useJobStore((s) => s.addJob);
   const updateJob = useJobStore((s) => s.updateJob);
@@ -40,6 +41,7 @@ const EditorScreen: React.FC = () => {
 
     const result = await OpenAIService.editImage(presetId, compressedPhoto, maskUri, {
       inputFidelity: highFidelity ? 'high' : 'default',
+      userPrompt: customPrompt.trim() || undefined,
     });
     const url = result.data[0].url;
     updateJob(jobId, { status: 'completed', resultUri: url });
@@ -55,6 +57,13 @@ const EditorScreen: React.FC = () => {
           <Text style={styles.label}>High Fidelity</Text>
           <Switch value={highFidelity} onValueChange={setHighFidelity} />
         </View>
+        <TextInput
+          style={styles.promptInput}
+          placeholder="Optional extra prompt…"
+          placeholderTextColor="#999"
+          value={customPrompt}
+          onChangeText={setCustomPrompt}
+        />
         <ShutterButton onPress={handleGenerate} />
       </View>
     </SafeAreaView>
@@ -76,6 +85,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   label: { color: '#fff', marginRight: 8 },
+  promptInput: {
+    width: '90%',
+    padding: 10,
+    borderRadius: 8,
+    backgroundColor: '#222',
+    color: '#fff',
+    marginBottom: 16,
+  },
 });
 
 export default EditorScreen; 
