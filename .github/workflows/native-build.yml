@@ -1,0 +1,51 @@
+name: Native builds (prebuild + pods/gradle)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ios:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - name: Enable Corepack & install deps
+        run: |
+          corepack enable
+          yarn install --frozen-lockfile
+      - name: Prebuild iOS
+        run: |
+          cd app
+          CI=1 npx expo prebuild --platform ios --no-install
+      - name: Install CocoaPods
+        run: |
+          cd app/ios
+          pod install --repo-update --deployment
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - name: Enable Corepack & install deps
+        run: |
+          corepack enable
+          yarn install --frozen-lockfile
+      - name: Prebuild Android
+        run: |
+          cd app
+          CI=1 npx expo prebuild --platform android --no-install
+      - name: Build Gradle (assembleDebug)
+        run: |
+          cd app/android
+          ./gradlew assembleDebug --no-daemon 
