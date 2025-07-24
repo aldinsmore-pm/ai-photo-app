@@ -1,0 +1,18 @@
+const dotenv = require('dotenv');
+const { resolve } = require('path');
+
+dotenv.config({ path: resolve(__dirname, '.env') });
+
+/**
+ * @param {{ config: import('@expo/config-types').ExpoConfig }} param0 
+ */
+module.exports = ({ config }) => {
+  return {
+    ...config,
+    extra: {
+      ...config.extra,
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+      OPENAI_ORG_ID: process.env.OPENAI_ORG_ID,
+    },
+  };
+}; 
