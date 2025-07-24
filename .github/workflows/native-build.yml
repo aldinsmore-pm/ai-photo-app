@@ -8,6 +8,9 @@ on:
 jobs:
   ios:
     runs-on: macos-13
+    defaults:
+      run:
+        working-directory: app
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node
@@ -20,16 +23,17 @@ jobs:
           corepack enable
           yarn install --frozen-lockfile
       - name: Prebuild iOS
-        run: |
-          cd app
-          CI=1 npx expo prebuild --platform ios --no-install
+        run: CI=1 npx expo prebuild --platform ios --no-install
       - name: Install CocoaPods
         run: |
-          cd app/ios
+          cd ios
           pod install --repo-update --deployment
 
   android:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node
@@ -42,10 +46,8 @@ jobs:
           corepack enable
           yarn install --frozen-lockfile
       - name: Prebuild Android
-        run: |
-          cd app
-          CI=1 npx expo prebuild --platform android --no-install
+        run: CI=1 npx expo prebuild --platform android --no-install
       - name: Build Gradle (assembleDebug)
         run: |
-          cd app/android
+          cd android
           ./gradlew assembleDebug --no-daemon 
