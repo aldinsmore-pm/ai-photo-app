@@ -1,5 +1,6 @@
 import OpenAI from 'react-native-openai';
 import { ENV } from '../env';
+import { buildPrompt } from '../utils/promptBuilder';
 
 export type GenerateImageOptions = {
   quality?: 'auto' | 'low' | 'medium' | 'high';
@@ -11,6 +12,7 @@ export type GenerateImageOptions = {
 
 export type EditImageOptions = GenerateImageOptions & {
   maskUri?: string;
+  presetId?: string;
 };
 
 /**
@@ -22,8 +24,10 @@ export type EditImageOptions = GenerateImageOptions & {
  */
 class OpenAIService {
   private client: OpenAI;
+  private isMock: boolean;
 
   constructor() {
+    this.isMock = ENV.OPENAI_API_KEY === 'test' || ENV.OPENAI_API_KEY === 'mock';
     this.client = new OpenAI({ apiKey: ENV.OPENAI_API_KEY, host: 'api.openai.com' });
   }
 
@@ -32,33 +36,65 @@ class OpenAIService {
    * Currently returns mocked placeholder data so that UI can render without backend.
    */
   async generateImage(presetId: string, options: GenerateImageOptions = {}) {
-    // TODO: integrate with real prompt presets; for now we return a placeholder URL
-    return {
-      created: Date.now(),
-      data: [
-        {
-          url: `https://placehold.co/1024x1024.png?text=${encodeURIComponent(presetId)}`,
-        },
-      ],
-      options,
-    } as const;
+    if (this.isMock) {
+      return {
+        created: Date.now(),
+        data: [
+          {
+            url: `https://placehold.co/1024x1024.png?text=${encodeURIComponent(presetId)}`,
+          },
+        ],
+        options,
+      } as const;
+    }
+
+    const prompt = buildPrompt(presetId);
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const response = await (this.client as any).images.generate({
+      model: 'gpt-image-1',
+      prompt,
+      quality: options.quality ?? 'auto',
+      size: options.size ?? 'auto',
+      n: options.n ?? 1,
+      output_format: options.outputFormat ?? 'jpeg',
+      input_fidelity: options.inputFidelity ?? 'default',
+    } as any);
+
+    return response;
   }
 
   /**
    * Edit an existing image applying a mask. Stubbed for now.
    */
-  async editImage(sourceUri: string, maskUri?: string, options: EditImageOptions = {}) {
-    return {
-      created: Date.now(),
-      data: [
-        {
-          url: `https://placehold.co/1024x1024.png?text=edit`,
-        },
-      ],
-      sourceUri,
-      maskUri,
-      options,
-    } as const;
+  async editImage(presetId: string, sourceUri: string, maskUri?: string, options: EditImageOptions = {}) {
+    if (this.isMock) {
+      return {
+        created: Date.now(),
+        data: [
+          {
+            url: `https://placehold.co/1024x1024.png?text=edit`,
+          },
+        ],
+        sourceUri,
+        maskUri,
+        options,
+      } as const;
+    }
+
+    const prompt = buildPrompt(presetId);
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const response = await (this.client as any).images.edit({
+      model: 'gpt-image-1',
+      image: sourceUri,
+      prompt,
+      mask: maskUri,
+      input_fidelity: options.inputFidelity ?? 'default',
+      quality: options.quality ?? 'auto',
+      size: options.size ?? 'auto',
+      output_format: options.outputFormat ?? 'jpeg',
+    } as any);
+
+    return response;
   }
 }
 

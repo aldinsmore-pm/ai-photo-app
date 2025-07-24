@@ -38,7 +38,7 @@ const EditorScreen: React.FC = () => {
 
     const compressedPhoto = await ensureUnder4MB(photoUri);
 
-    const result = await OpenAIService.editImage(compressedPhoto, maskUri, {
+    const result = await OpenAIService.editImage(presetId, compressedPhoto, maskUri, {
       inputFidelity: highFidelity ? 'high' : 'default',
     });
     const url = result.data[0].url;
