@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, SafeAreaView, StyleSheet, Switch, Text, View } from 'react-native';
-import MaskOverlay from '../components/MaskOverlay';
+import MaskOverlay, { MaskOverlayHandle } from '../components/MaskOverlay';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import ShutterButton from '../components/ShutterButton';
@@ -21,6 +21,7 @@ const EditorScreen: React.FC = () => {
   const route = useRoute() as EditorRoute;
   const { photoUri, presetId } = route.params;
   const [highFidelity, setHighFidelity] = useState(false);
+  const maskRef = React.useRef<MaskOverlayHandle>(null);
   const addJob = useJobStore((s) => s.addJob);
   const updateJob = useJobStore((s) => s.updateJob);
 
@@ -28,7 +29,13 @@ const EditorScreen: React.FC = () => {
     const jobId = Date.now().toString();
     addJob({ id: jobId, presetId, status: 'generating' });
     (navigation as any).navigate('Loading', { jobId });
-    const result = await OpenAIService.generateImage(presetId, {
+
+    let maskUri: string | undefined;
+    if (maskRef.current) {
+      maskUri = await maskRef.current.capture();
+    }
+
+    const result = await OpenAIService.editImage(photoUri, maskUri, {
       inputFidelity: highFidelity ? 'high' : 'default',
     });
     const url = result.data[0].url;
@@ -38,7 +45,7 @@ const EditorScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Image source={{ uri: photoUri }} style={styles.preview} resizeMode="contain" />
-      <MaskOverlay />
+      <MaskOverlay ref={maskRef} />
 
       <View style={styles.controls}>
         <View style={styles.row}>
