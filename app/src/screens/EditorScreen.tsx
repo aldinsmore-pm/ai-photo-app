@@ -7,6 +7,7 @@ import ShutterButton from '../components/ShutterButton';
 import { useJobStore } from '../store/useJobStore';
 import OpenAIService from '../services/OpenAIService';
 import { ensureUnder4MB } from '../utils/imageUtils';
+import { showError } from '../utils/errorToast';
 
 interface Params {
   photoUri: string;
@@ -39,12 +40,18 @@ const EditorScreen: React.FC = () => {
 
     const compressedPhoto = await ensureUnder4MB(photoUri);
 
-    const result = await OpenAIService.editImage(presetId, compressedPhoto, maskUri, {
-      inputFidelity: highFidelity ? 'high' : 'default',
-      userPrompt: customPrompt.trim() || undefined,
-    });
-    const url = result.data[0].url;
-    updateJob(jobId, { status: 'completed', resultUri: url });
+    try {
+      const result = await OpenAIService.editImage(presetId, compressedPhoto, maskUri, {
+        inputFidelity: highFidelity ? 'high' : 'default',
+        userPrompt: customPrompt.trim() || undefined,
+      });
+      const url = result.data[0].url;
+      updateJob(jobId, { status: 'completed', resultUri: url });
+    } catch (e: any) {
+      updateJob(jobId, { status: 'error', error: e.message });
+      showError(e.message || 'Generation failed');
+      navigation.goBack();
+    }
   };
 
   return (

@@ -44,8 +44,14 @@
       <key>NSAllowsLocalNetworking</key>
       <true/>
     </dict>
+    <key>NSCameraUsageDescription</key>
+    <string>This app needs camera access to capture photos for AI enhancements.</string>
     <key>NSFaceIDUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your Face ID biometric data.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Allows the app to save your AI-enhanced photos to your gallery.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Allows the app to select existing photos to enhance with AI.</string>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>

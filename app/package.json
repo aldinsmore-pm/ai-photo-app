@@ -16,6 +16,8 @@
     "expo": "^53.0.20",
     "expo-file-system": "~18.1.11",
     "expo-image-manipulator": "~13.1.7",
+    "expo-image-picker": "~14.2.1",
+    "expo-media-library": "~15.2.4",
     "expo-secure-store": "~14.2.3",
     "expo-status-bar": "~2.2.3",
     "lottie-react-native": "7.2.2",

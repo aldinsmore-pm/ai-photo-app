@@ -53,11 +53,12 @@ class OpenAIService {
     const response = await (this.client as any).images.generate({
       model: 'gpt-image-1',
       prompt,
-      quality: options.quality ?? 'auto',
+      // Default to high-quality generation with high input fidelity, per OpenAI cookbook guidance
+      quality: options.quality ?? 'high',
       size: options.size ?? 'auto',
       n: options.n ?? 1,
       output_format: options.outputFormat ?? 'jpeg',
-      input_fidelity: options.inputFidelity ?? 'default',
+      input_fidelity: options.inputFidelity ?? 'high',
     } as any);
 
     return response;
@@ -88,8 +89,9 @@ class OpenAIService {
       image: sourceUri,
       prompt,
       mask: maskUri,
-      input_fidelity: options.inputFidelity ?? 'default',
-      quality: options.quality ?? 'auto',
+      input_fidelity: options.inputFidelity ?? 'high',
+      // Default to high-quality generation with high input fidelity
+      quality: options.quality ?? 'high',
       size: options.size ?? 'auto',
       output_format: options.outputFormat ?? 'jpeg',
     } as any);
