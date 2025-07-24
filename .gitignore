@@ -1,2 +1,3 @@
 app/ios/app.xcworkspace/
 app/ios/app/PrivacyInfo.xcprivacy
+/package-lock.json

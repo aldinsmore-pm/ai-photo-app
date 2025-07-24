@@ -28,7 +28,7 @@ jobs:
       - name: Install CocoaPods
         run: |
           cd ios
-          pod install --repo-update --deployment
+          pod install --repo-update --clean-install
 
   android:
     runs-on: ubuntu-latest
