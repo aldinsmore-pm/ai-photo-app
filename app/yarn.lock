@@ -283,7 +283,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.27.1"
 
-"@babel/plugin-proposal-nullish-coalescing-operator@^7.22.15":
+"@babel/plugin-proposal-nullish-coalescing-operator@7.21.4-esm.4":
   version "7.21.4-esm.4"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-nullish-coalescing-operator/-/plugin-proposal-nullish-coalescing-operator-7.21.4-esm.4.tgz#5c74b775e75f0cdd6d64c035c2cfc20b77c352c2"
   integrity sha512-4bi9X2h8bmvSBWPGIlM6QxO4O2Gfufb6U045AVQQtcTxQvH5aBg7ivCAsxjN18S6EwZi+d5e2SCUAQNivv6yow==
@@ -291,7 +291,7 @@
     "@babel/helper-plugin-utils" "7.21.4-esm.4"
     "@babel/plugin-syntax-nullish-coalescing-operator" "^7.8.3"
 
-"@babel/plugin-proposal-optional-chaining@^7.22.15":
+"@babel/plugin-proposal-optional-chaining@7.21.4-esm.4":
   version "7.21.4-esm.4"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-optional-chaining/-/plugin-proposal-optional-chaining-7.21.4-esm.4.tgz#e05a36f3789fa3510c50fc7f52ab051ce5fc663b"
   integrity sha512-fwKOtLi1/lx3afxidxjXAkA4k6ufeOeNL6ka0EKblRVxpm5fKVXIvohAgMQrlFXKBn+T+qA9joyLlFlVPe91Mg==
@@ -447,7 +447,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.27.1"
 
-"@babel/plugin-transform-arrow-functions@^7.0.0-0", "@babel/plugin-transform-arrow-functions@^7.22.15", "@babel/plugin-transform-arrow-functions@^7.24.7":
+"@babel/plugin-transform-arrow-functions@^7.0.0-0", "@babel/plugin-transform-arrow-functions@^7.22.5", "@babel/plugin-transform-arrow-functions@^7.24.7":
   version "7.27.1"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-arrow-functions/-/plugin-transform-arrow-functions-7.27.1.tgz#6e2061067ba3ab0266d834a9f94811196f2aba9a"
   integrity sha512-8Z4TGic6xW70FKThA5HYEKKyBpOOsucTOD1DjU3fZxDg+K3zBJcXMFnt/4yQiZnf5+MiOMSXQ9PaEK/Ilh1DeA==
@@ -729,7 +729,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.27.1"
 
-"@babel/plugin-transform-template-literals@^7.0.0-0", "@babel/plugin-transform-template-literals@^7.22.15":
+"@babel/plugin-transform-template-literals@^7.0.0-0", "@babel/plugin-transform-template-literals@^7.22.5":
   version "7.27.1"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-template-literals/-/plugin-transform-template-literals-7.27.1.tgz#1a0eb35d8bb3e6efc06c9fd40eb0bcef548328b8"
   integrity sha512-fBJKiV7F2DxZUkg5EtHKXQdbsbURW3DZKQUWphDum0uRP6eHGGa/He9mc0mypL680pb+e/lDIthRohlv8NCHkg==
