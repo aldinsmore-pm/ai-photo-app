@@ -2,11 +2,13 @@ import React, { useRef, useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CameraView from '../components/CameraView';
+import SampleImagePicker from '../components/SampleImagePicker';
 import StyleBar from '../components/StyleBar';
 import ShutterButton from '../components/ShutterButton';
 import { Camera } from 'react-native-vision-camera';
 import { useJobStore } from '../store/useJobStore';
 import OpenAIService from '../services/OpenAIService';
+import { useCameraDevices } from 'react-native-vision-camera';
 
 type Capture = Awaited<ReturnType<Camera['takePhoto']>>;
 
@@ -41,10 +43,21 @@ const CameraScreen: React.FC = () => {
       setIsCapturing(false);
     }
   };
+
+  const devicesObj = useCameraDevices();
+  const hasDevice = !!(devicesObj as any).back; // quick check
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* We forward ref to CameraView in later refactor; for now overlay shutter */}
-      <CameraView ref={cameraRef as any} />
+      {hasDevice ? (
+        <CameraView ref={cameraRef as any} />
+      ) : (
+        <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+          <SampleImagePicker onPicked={(uri) => {
+            (navigation as any).navigate('Editor', { photoUri: uri, presetId: currentStyleId });
+          }} />
+        </View>
+      )}
 
       <View style={styles.barWrapper}>
         <StyleBar />
