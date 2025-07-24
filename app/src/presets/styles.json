@@ -1,0 +1,14 @@
+[
+  {
+    "id": "kodachrome-64",
+    "name": "Kodachrome ’64",
+    "prompt": "A photo in the style of Kodak Kodachrome 64 film, rich colors, slight grain, 1960s aesthetic",
+    "thumbnailLutUri": "kodachrome64.png"
+  },
+  {
+    "id": "instant-polaroid",
+    "name": "Instant Polaroid",
+    "prompt": "Instant Polaroid look with soft pastel tones, slight vignette, classic white border",
+    "thumbnailLutUri": "instantpolaroid.png"
+  }
+] 
