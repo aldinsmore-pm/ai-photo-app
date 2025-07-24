@@ -6,6 +6,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import ShutterButton from '../components/ShutterButton';
 import { useJobStore } from '../store/useJobStore';
 import OpenAIService from '../services/OpenAIService';
+import { ensureUnder4MB } from '../utils/imageUtils';
 
 interface Params {
   photoUri: string;
@@ -35,7 +36,9 @@ const EditorScreen: React.FC = () => {
       maskUri = await maskRef.current.capture();
     }
 
-    const result = await OpenAIService.editImage(photoUri, maskUri, {
+    const compressedPhoto = await ensureUnder4MB(photoUri);
+
+    const result = await OpenAIService.editImage(compressedPhoto, maskUri, {
       inputFidelity: highFidelity ? 'high' : 'default',
     });
     const url = result.data[0].url;
