@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import CameraView from '../components/CameraView';
 import StyleBar from '../components/StyleBar';
 import ShutterButton from '../components/ShutterButton';
@@ -10,6 +11,7 @@ import OpenAIService from '../services/OpenAIService';
 type Capture = Awaited<ReturnType<Camera['takePhoto']>>;
 
 const CameraScreen: React.FC = () => {
+  const navigation = useNavigation();
   const cameraRef = useRef<Camera | null>(null);
   const addJob = useJobStore((s) => s.addJob);
   const updateJob = useJobStore((s) => s.updateJob);
@@ -33,7 +35,7 @@ const CameraScreen: React.FC = () => {
       const result = await OpenAIService.generateImage(currentStyleId);
       const imageUrl = result.data[0].url;
       updateJob(jobId, { status: 'completed', resultUri: imageUrl });
-      // TODO: navigate to ResultScreen once implemented
+      navigation.navigate('Result' as never, { jobId } as never);
     } catch (err: any) {
       console.error(err);
     } finally {

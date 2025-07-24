@@ -16,4 +16,13 @@ jest.mock('react-native-openai', () => {
 
 jest.mock('expo-constants', () => ({
   expoConfig: { extra: { OPENAI_API_KEY: 'test' } },
-})); 
+}));
+
+jest.mock('@react-navigation/native', () => {
+  const ActualNav: any = jest.requireActual('@react-navigation/native');
+  return {
+    ...(ActualNav as any),
+    useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn() }),
+    useRoute: () => ({ params: {} }),
+  };
+}); 
