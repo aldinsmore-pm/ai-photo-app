@@ -14,5 +14,12 @@ module.exports = ({ config }) => {
       OPENAI_API_KEY: process.env.OPENAI_API_KEY,
       OPENAI_ORG_ID: process.env.OPENAI_ORG_ID,
     },
+    ios: {
+      ...config.ios,
+      infoPlist: {
+        ...(config.ios?.infoPlist ?? {}),
+        NSCameraUsageDescription: 'This app needs camera access to capture photos for AI enhancements.',
+      },
+    },
   };
 }; 
